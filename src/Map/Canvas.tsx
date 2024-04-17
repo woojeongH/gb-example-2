@@ -2,7 +2,8 @@
 import { useSetAtom } from "jotai";
 
 import styled from "@emotion/styled";
-import mapImage from "@/assets/map.png";
+import mapImage1 from "@/assets/map.png";
+import mapImage2 from "@/assets/example2.png";
 import { useEffect, useRef } from "react";
 import { fullSize, itemsPerRow } from "@/constants";
 import { pointsAtom } from "@/store";
@@ -42,7 +43,8 @@ const Canvas = () => {
     // }
 
     const img = new Image();
-    img.src = mapImage;
+    //img.src = mapImage1;
+    img.src = mapImage2;
 
     img.onload = function () {
       ctx.drawImage(img, 0, 0, fullSize, fullSize);
