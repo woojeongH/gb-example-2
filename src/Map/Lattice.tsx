@@ -2,8 +2,9 @@ import { useAtomValue } from "jotai";
 
 import styled from "@emotion/styled";
 import LatticeItem from "./LatticeItem";
-import { itemsPerRow } from "@/constants";
+import { itemsPerRow, fullSize } from "@/constants";
 import { pointsAtom } from "@/store";
+import { useState } from "react";
 
 export interface LatticeProps {
   size: number;
@@ -21,6 +22,7 @@ const Container = styled.div`
 
 const Lattice = () => {
   const points: any = useAtomValue(pointsAtom);
+  const [isMap, setIsMap] = useState(false);
 
   const latticeItems: boolean[] = [];
   for (let y = 0; y < itemsPerRow; y++) {
@@ -30,11 +32,28 @@ const Lattice = () => {
     }
   }
 
+  const onMouseMove = (e: any) => {
+    const { layerX, layerY } = e.nativeEvent;
+
+    const x = Math.floor((layerX / fullSize) * itemsPerRow);
+    const y = Math.floor((layerY / fullSize) * itemsPerRow);
+
+    let flag = false;
+    try {
+      if (points[x][y]) flag = true;
+    } catch (error) {
+      console.warn(error);
+    }
+
+    if (isMap != flag) setIsMap(flag);
+  };
+
   return (
-    <Container>
+    <Container onMouseMove={onMouseMove}>
       {latticeItems.map((isContains, index) => (
         <LatticeItem key={index} isContains={isContains}></LatticeItem>
       ))}
+      <div>마우스가 지도 위에 있나? {isMap ? "O" : "X"}</div>
     </Container>
   );
 };
